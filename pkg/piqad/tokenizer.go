@@ -1,6 +1,6 @@
 package piqad
 
-import "errors"
+import "fmt"
 
 // Tokenizer implements a tokenizer that extracts pIqaD tokens from a string
 // Example: "mnng" contains 3 pIqaD letters (i.e. tokens): "m", "n", "ng"
@@ -46,7 +46,9 @@ func (t *Tokenizer) Scan() bool {
 	}
 
 	if t.token == "" {
-		t.err = errors.New("piqad.Tokenizer: string contains invalid symbols and cannot be parsed well")
+		t.err = fmt.Errorf(
+			"piqad.Tokenizer: string contains invalid symbols and cannot be parsed well. Stopped at %d-th symbol",
+			t.pos+1)
 		return false
 	}
 

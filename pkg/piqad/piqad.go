@@ -13,7 +13,7 @@ func Transliterate(str string) (string, error) {
 	for i, r := range str {
 		symb, ok := englishMap[string(r)]
 		if !ok {
-			return "", fmt.Errorf("piqad.Transliterator: cannot match symbol '%s' at po %d", string(r), i)
+			return "", fmt.Errorf("piqad.Transliterator: cannot match symbol '%s' at pos %d", string(r), i+1)
 		}
 		buf += symb
 	}
