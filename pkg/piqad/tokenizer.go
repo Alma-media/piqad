@@ -1,59 +1,61 @@
 package piqad
 
-import (
-	"errors"
-)
+import "errors"
 
 // Tokenizer implements a tokenizer that extracts pIqaD tokens from a string
 // Example: "mnng" contains 3 pIqaD letters (i.e. tokens): "m", "n", "ng"
 type Tokenizer struct {
-	runes        []rune
-	token        string
-	pos          int
-	maxTokenSize int
+	runes []rune // Runes array used to scan over
+	token string // Last found token
+	done  bool   // Scan has finished
+	err   error  // An error
+	pos   int    // Current Tokenizer position in runes
 }
 
-// NewPiqTokenizer buils a tokenizer from an input string
-func NewPiqTokenizer(input string) *Tokenizer {
+// NewTokenizer buils a tokenizer from an input string
+func NewTokenizer(input string) *Tokenizer {
 	return &Tokenizer{
-		runes:        []rune(input),
-		maxTokenSize: 3,
+		runes: []rune(input),
 	}
 }
 
-// Next changes cursor position to a next token
+// Err returns the last error that was encountered by the Tokenizer.
+func (t *Tokenizer) Err() error {
+	return t.err
+}
+
+// Scan changes cursor position to a next token
 // Not thread-safe!
-func (t *Tokenizer) Next() bool {
+func (t *Tokenizer) Scan() bool {
+	if t.done {
+		return false
+	}
+
 	current := ""
 	t.token = ""
-	found := false
+
 	i := t.pos
-
 	for i < len(t.runes) {
-		ch := string(t.runes[i])
+		current += string(t.runes[i])
 		i++
-		current += ch
-
 		if isValidToken(current) {
-			t.token = current
 			t.pos = i
-			found = true
-		}
-
-		if i-t.pos > t.maxTokenSize {
-			break
+			t.token = current
+			t.done = t.pos >= len(t.runes)
 		}
 	}
 
-	return found
+	if t.token == "" {
+		t.err = errors.New("piqad.Tokenizer: string contains invalid symbols and cannot be parsed well")
+		return false
+	}
+
+	return true
 }
 
-// Get returns a last found token
-func (t *Tokenizer) Get() (string, error) {
-	if t.token == "" {
-		return "", errors.New("transliterator: cannot find any token")
-	}
-	return t.token, nil
+// Text returns a last found token
+func (t *Tokenizer) Text() string {
+	return t.token
 }
 
 func isValidToken(token string) bool {
