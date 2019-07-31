@@ -1,4 +1,4 @@
-package transliterator
+package piqad
 
 import (
 	"reflect"
@@ -12,12 +12,12 @@ func TestNewEng2PiqTransliterator(t *testing.T) {
 	tests := []struct {
 		name string
 		args args
-		want *Eng2PiqTransliterator
+		want *EnglishTransliterator
 	}{
 		{
 			"Builds a structure from an input string",
 			args{"Hello"},
-			&Eng2PiqTransliterator{
+			&EnglishTransliterator{
 				pos:   0,
 				runes: []rune("Hello"),
 			},
@@ -35,24 +35,24 @@ func TestNewEng2PiqTransliterator(t *testing.T) {
 func TestEng2PiqTransliterator_Next(t *testing.T) {
 	tests := []struct {
 		name           string
-		transliterator *Eng2PiqTransliterator
+		transliterator *EnglishTransliterator
 		want           bool
 	}{
 		{
 			"Returns false if the input is empty",
-			&Eng2PiqTransliterator{pos: 0, runes: []rune{}},
+			&EnglishTransliterator{pos: 0, runes: []rune{}},
 			false,
 		},
 
 		{
 			"Returns false if cursor is out of range",
-			&Eng2PiqTransliterator{pos: 1, runes: []rune{'a'}},
+			&EnglishTransliterator{pos: 1, runes: []rune{'a'}},
 			false,
 		},
 
 		{
 			"Returns true if cursor is not out of range",
-			&Eng2PiqTransliterator{pos: 0, runes: []rune{'a'}},
+			&EnglishTransliterator{pos: 0, runes: []rune{'a'}},
 			true,
 		},
 	}
@@ -68,27 +68,27 @@ func TestEng2PiqTransliterator_Next(t *testing.T) {
 func TestEng2PiqTransliterator_Get(t *testing.T) {
 	tests := []struct {
 		name           string
-		transliterator *Eng2PiqTransliterator
+		transliterator *EnglishTransliterator
 		want           string
 		wantErr        bool
 	}{
 		{
 			"Returns error if symbol cannot be matched",
-			&Eng2PiqTransliterator{pos: 0, runes: []rune("?")},
+			&EnglishTransliterator{pos: 0, runes: []rune("?")},
 			"",
 			true,
 		},
 
 		{
 			"Returns a pIqaD letter name for a lower case symbol",
-			&Eng2PiqTransliterator{pos: 1, runes: []rune("axc")},
+			&EnglishTransliterator{pos: 1, runes: []rune("axc")},
 			"tlh",
 			false,
 		},
 
 		{
 			"Returns a pIqaD letter name for a upper case symbol",
-			&Eng2PiqTransliterator{pos: 0, runes: []rune("Xac")},
+			&EnglishTransliterator{pos: 0, runes: []rune("Xac")},
 			"tlh",
 			false,
 		},
@@ -102,6 +102,35 @@ func TestEng2PiqTransliterator_Get(t *testing.T) {
 			}
 			if got != tt.want {
 				t.Errorf("Eng2PiqTransliterator.Get() = %v, want %v", got, tt.want)
+			}
+		})
+	}
+}
+
+func TestEng2Piq(t *testing.T) {
+	type args struct {
+		eng rune
+	}
+	tests := [...]struct {
+		name    string
+		args    args
+		want    string
+		wantErr bool
+	}{
+		{"Returns a matched symbold when input symbol is downcased", args{'x'}, "tlh", false},
+		{"Returns a matched symbold when input symbol is upcased", args{'X'}, "tlh", false},
+		{"Returns an error when input cannot be matched", args{'?'}, "", true},
+	}
+
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			got, err := eng2Piq(tt.args.eng)
+			if (err != nil) != tt.wantErr {
+				t.Errorf("Eng2Piq() error = %v, wantErr %v", err, tt.wantErr)
+				return
+			}
+			if got != tt.want {
+				t.Errorf("Eng2Piq() = %v, want %v", got, tt.want)
 			}
 		})
 	}

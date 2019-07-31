@@ -1,12 +1,12 @@
-package transliterator
+package piqad
 
 import (
 	"errors"
 )
 
-// PiqTokenizer implements a tokenizer that extracts pIqaD tokens from a string
+// Tokenizer implements a tokenizer that extracts pIqaD tokens from a string
 // Example: "mnng" contains 3 pIqaD letters (i.e. tokens): "m", "n", "ng"
-type PiqTokenizer struct {
+type Tokenizer struct {
 	runes        []rune
 	token        string
 	pos          int
@@ -14,8 +14,8 @@ type PiqTokenizer struct {
 }
 
 // NewPiqTokenizer buils a tokenizer from an input string
-func NewPiqTokenizer(input string) *PiqTokenizer {
-	return &PiqTokenizer{
+func NewPiqTokenizer(input string) *Tokenizer {
+	return &Tokenizer{
 		runes:        []rune(input),
 		maxTokenSize: 3,
 	}
@@ -23,7 +23,7 @@ func NewPiqTokenizer(input string) *PiqTokenizer {
 
 // Next changes cursor position to a next token
 // Not thread-safe!
-func (t *PiqTokenizer) Next() bool {
+func (t *Tokenizer) Next() bool {
 	current := ""
 	t.token = ""
 	found := false
@@ -49,7 +49,7 @@ func (t *PiqTokenizer) Next() bool {
 }
 
 // Get returns a last found token
-func (t *PiqTokenizer) Get() (string, error) {
+func (t *Tokenizer) Get() (string, error) {
 	if t.token == "" {
 		return "", errors.New("transliterator: cannot find any token")
 	}
@@ -57,6 +57,6 @@ func (t *PiqTokenizer) Get() (string, error) {
 }
 
 func isValidToken(token string) bool {
-	_, ok := piqad2utf8Map[token]
+	_, ok := piqadMap[token]
 	return ok
 }

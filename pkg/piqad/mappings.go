@@ -1,6 +1,6 @@
-package transliterator
+package piqad
 
-var eng2piqadMap = map[string]string{
+var englishMap = map[string]string{
 	"a": "a",
 	"b": "b",
 	"c": "ch",
@@ -42,7 +42,7 @@ var eng2piqadMap = map[string]string{
 	" ": " ",
 }
 
-var piqad2utf8Map = map[string]int{
+var piqadMap = map[string]int{
 	"a":   0xF8D0,
 	"b":   0xF8D1,
 	"ch":  0xF8D2,

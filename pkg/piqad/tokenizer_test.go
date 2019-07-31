@@ -1,4 +1,4 @@
-package transliterator
+package piqad
 
 import (
 	"reflect"
@@ -12,12 +12,12 @@ func TestNewPiqTokenizer(t *testing.T) {
 	tests := []struct {
 		name string
 		args args
-		want *PiqTokenizer
+		want *Tokenizer
 	}{
 		{
 			"Returns a new tokenizer",
 			args{"ng"},
-			&PiqTokenizer{runes: []rune("ng"), maxTokenSize: 3},
+			&Tokenizer{runes: []rune("ng"), maxTokenSize: 3},
 		},
 	}
 	for _, tt := range tests {
@@ -76,7 +76,7 @@ func TestPiqTokenizer_Get(t *testing.T) {
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			tok := &PiqTokenizer{
+			tok := &Tokenizer{
 				token: tt.fields.token,
 			}
 			got, err := tok.Get()
