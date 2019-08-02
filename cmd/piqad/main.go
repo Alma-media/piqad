@@ -45,13 +45,18 @@ func main() {
 		fmt.Println("No characters found with the given name")
 	} else {
 		fmt.Printf("%d character(s) found with the given name:\n", cnt)
-		for name, specie := range characters {
-			fmt.Printf("%s (%s)\n", name, specie)
+		for _, info := range characters {
+			fmt.Printf("%s (%s)\n", info.name, info.specie)
 		}
 	}
 }
 
-func fetchCharacterSpecies(name string) (map[string]string, error) {
+type charInfo struct {
+	name   string
+	specie string
+}
+
+func fetchCharacterSpecies(name string) ([]charInfo, error) {
 	var (
 		conf   *stapi.Configuration = stapi.NewConfiguration()
 		client *stapi.APIClient     = stapi.NewAPIClient(conf)
@@ -67,9 +72,10 @@ func fetchCharacterSpecies(name string) (map[string]string, error) {
 		uids = append(uids, char.Uid)
 	}
 
-	foundChracters := make(map[string]string)
+	var foundChracters []charInfo
 	for _, char := range getCharacters(uids, client) {
-		foundChracters[char.Name] = speciesToString(char.CharacterSpecies)
+		info := charInfo{char.Name, speciesToString(char.CharacterSpecies)}
+		foundChracters = append(foundChracters, info)
 	}
 
 	return foundChracters, nil
