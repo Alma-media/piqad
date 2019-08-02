@@ -2,6 +2,9 @@
 
 piqad is a tool to work with Klingon alphabet
 
+## CI Status
+[![CircleCI](https://circleci.com/gh/azzz/piqad/tree/master.svg?style=svg)](https://circleci.com/gh/azzz/piqad/tree/master)
+
 # Installation
 `go get github.com/azzz/piqad/cmd/piqad`
 

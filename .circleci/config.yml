@@ -1,0 +1,24 @@
+version: 2
+jobs:
+  build:
+    docker:
+      - image: circleci/golang:1.12
+    working_directory: /go/src/github.com/azzz/piqad
+
+    steps:
+      - checkout
+
+      - restore_cache:
+          keys:
+          - v1-deps-{{ checksum "go.mod" }}
+          - v1-deps-
+
+      - save_cache:
+          key: v1-deps-{{ checksum "go.mod" }}
+          paths:
+            - "/go/pkg"
+
+      - run:
+          name: Run unit tests pkg/piqad
+          command: |
+            go test github.com/azzz/piqad/pkg/piqad

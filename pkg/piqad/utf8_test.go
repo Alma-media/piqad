@@ -15,7 +15,7 @@ func TestPiq2UTF8Code(t *testing.T) {
 		wantErr bool
 	}{
 		{"Return utf8 code for a simple symbol", args{"a"}, 0xF8D0, false},
-		{"Return utf8 code for a complex symbol", args{"tlh"}, 0xF8E5, false},
+		{"Return utf8 code for a complex symbol", args{"tlh"}, 0xF8E4, false},
 		{"Return an error when cannot match symbol", args{"?"}, 0, true},
 	}
 	for _, tt := range tests {
