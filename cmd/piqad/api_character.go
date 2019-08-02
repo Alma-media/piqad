@@ -43,6 +43,7 @@ func getCharacters(uids []string, apiClient *stapi.APIClient) []*stapi.Character
 	wg.Add(len(uids))
 
 	for _, uid := range uids {
+		// fmt.Println(uid)
 		go func(uid string) {
 			defer wg.Done()
 			c, err := getCharacter(uid, apiClient)
