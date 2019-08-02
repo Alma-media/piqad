@@ -1,0 +1,34 @@
+version: 2
+jobs:
+  build:
+    docker:
+      - image: circleci/golang:1.12
+    working_directory: /go/src/github.com/azzz/piqad
+  environment:
+    TEST_RESULTS: /tmp/test-results
+
+  steps:
+    - checkout
+
+    - run: mkdir -p $TEST_RESULTS
+
+    - restore_cache:
+      keys:
+      - v1-deps-{{ checksum "go.mod" }}
+      - v1-deps-
+
+    - run: go get github.com/jstemmer/go-junit-report
+    - run: make
+
+    - save_cache:
+      key: v1-deps-{{ checksum "go.mod" }}
+      paths:
+        - "/go/pkg"
+
+    - run:
+      name: Run unit tests pkg/piqad
+      command: |
+        go test github.com/azzz/piqad/pkg/piqad 2>&1 | go-junit-report > ${TEST_RESULTS}/piqad-test-report.xml
+
+    - store_test_results:
+        path: /tmp/test-results
