@@ -16,7 +16,7 @@ You can build application for the most popular platforms manually:
 # Usage
 `piqad [-from=english] input`
 
-By default, the tool takes input as an English phrase and transliterates to Klingon before outputing UTF-8 codes of Lkingon symbols.
+By default, the tool takes input as an English phrase and transliterates to Klingon before outputing UTF-8 codes of Klingon symbols.
 
 You can pass param `-from-piqad` to interpretate input as a Klingon phrase. In this case, the tool excludes pIqaD tokens from the input and prints related UTF-8 codes and all found characters with their species.
 Pay attention that pIqaD is a case-sensetive alphabet.
