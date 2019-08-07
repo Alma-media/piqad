@@ -11,7 +11,7 @@ piqad is a tool to work with Klingon alphabet
 # Building
 You can build application for the most popular platforms manually:
 - clone github.com/azzz/piqad
-- run `bin/build.sh`
+- run `scripts/build.sh github.com/azzz/piqad/cmd/piqad`
 
 # Usage
 `piqad [-from=english] input`
@@ -24,6 +24,7 @@ Pay attention that pIqaD is a case-sensetive alphabet.
 ```
 > piqad Uhura
 0xF8E5 0xF8D6 0xF8E5 0xF8E1 0xF8D0
+3 character(s) found with the given name:
 Nyota Uhura (Human)
 Nyota Uhura ()
 Nyota Uhura (Human)
@@ -37,6 +38,7 @@ piqad.Tokenizer: string contains invalid symbols and cannot be parsed well. Stop
 ```
 > piqad -from=piqad uHura
 0xF8E5 0xF8D6 0xF8E5 0xF8E1 0xF8D0
+3 character(s) found with the given name:
 Nyota Uhura (Human)
 Nyota Uhura ()
 Nyota Uhura (Human)
