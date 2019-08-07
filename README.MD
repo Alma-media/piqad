@@ -13,6 +13,18 @@ You can build application for the most popular platforms manually:
 - clone github.com/azzz/piqad
 - run `scripts/build.sh github.com/azzz/piqad/cmd/piqad`
 
+# Running in Docker
+You can run piqad util in docker:
+- clone github.com/azzz/piqad
+- run `scripts/run-in-docker.sh`
+
+Examples:
+- `scripts/run-in-docker.sh uhura`
+- `scripts/run-in-docker.sh -from=piqad uHura`
+- `scripts/run-in-docker.sh -h`
+
+Pay attention that first running may take some time as Docker has to build image
+
 # Usage
 `piqad [-from=english] input`
 
